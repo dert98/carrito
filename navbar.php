@@ -19,9 +19,6 @@
                         <a class="nav-link" href="#">Ofertas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/carrito/porCategoria.php?categoria_id=1">Categorias</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Nuevos Productos</a>
                     </li>
                     <li class="nav-item">
@@ -34,7 +31,9 @@
                     </li>
                 </ul>
                 <ul>
-                    
+                    <?php
+                        include 'carrito.php';
+                    ?>
                 </ul>
             </div>
         </div>

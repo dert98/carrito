@@ -18,7 +18,7 @@
 
                             if ($result->num_rows > 0) {
                                 while($row = $result->fetch_assoc()) {
-                                    echo '<li class="nav-item"><a class="nav-link" href="#">'.$row["nombre"].'</a></li>';
+                                    echo '<li class="nav-item"><a class="nav-link" href="/carrito/?categoria_id='.$row["id"].'">'.$row["nombre"].'</a></li>';
                                 }
                             } else {
                                 echo "0 resultados";

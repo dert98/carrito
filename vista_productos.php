@@ -11,7 +11,11 @@
     <div class="container">
         <h1 class="mt-5 text-center">Productos por
             <?php
-            echo $nombre_categoria;
+                if (isset ($nombre_categoria)){
+                    echo $nombre_categoria;
+                }else{
+                    echo 'Categoria';
+                }
             ?>
         </h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
