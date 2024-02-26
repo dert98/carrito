@@ -51,17 +51,26 @@
             el: '#app',
             data: {
                 products: [],
-                cart: [] // Array para almacenar los productos en el carrito
+                cart: [], // Array para almacenar los productos en el carrito
+                categoria_id: null // Variable para almacenar el ID de la categoría seleccionada
             },
             mounted() {
+                // Obtener el ID de la categoría desde la URL
+                const urlParams = new URLSearchParams(window.location.search);
+                this.categoria_id = urlParams.get('categoria_id');
+
                 // Realizar una solicitud HTTP para obtener los productos desde la API PHP
-                axios.get('obtener_productos.php')
-                    .then(response => {
-                        this.products = response.data;
-                    })
-                    .catch(error => {
-                        console.error('Error al obtener los productos:', error);
-                    });
+                axios.get('obtener_productos.php', {
+                    params: {
+                        categoria_id: this.categoria_id // Pasar el ID de la categoría como parámetro
+                    }
+                })
+                .then(response => {
+                    this.products = response.data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los productos:', error);
+                });
             },
             methods: {
                 // Método para agregar un producto al carrito
