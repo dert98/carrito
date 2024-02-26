@@ -15,7 +15,7 @@
         include 'conec.php';
         include 'slider.php';
         include 'navbar.php';
-        include 'lateral.php';
+        include 'principal.php';
         include 'footer.php';
     ?>
     <a href="">

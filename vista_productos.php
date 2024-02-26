@@ -11,30 +11,47 @@
     <div class="container">
         <h1 class="mt-5 text-center">Productos por
             <?php
-                if (isset ($nombre_categoria)){
-                    echo $nombre_categoria;
-                }else{
-                    echo 'Categoria';
+                if (!isset($_GET['categoria_id']) || empty($_GET['categoria_id'])) {
+                    echo "Categoria";
+                } else {
+                    $id_categoria = $_GET['categoria_id'];
+                    $sql = "SELECT nombre FROM categorias WHERE id = $id_categoria";
+                    $resultado = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($resultado) > 0) {
+                        $fila = mysqli_fetch_assoc($resultado);
+                        echo $fila['nombre'];
+                    }
                 }
+                
             ?>
         </h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div>
-                <h2>Products</h2>
-                <ul>
-                    <li v-for="product in products" :key="product.id">
-                        {{ product.name }} - ${{ product.price }}
-                        <button @click="addToCart(product)">Add to Cart</button>
-                    </li>
-                </ul>
+            <div id='app'>
+                <h2>Productos</h2>
+                <div class="row">
+                    <div class="col" v-for="product in products" :key="product.id">
+                        <div class="card">
+                            <img :src="product.image" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.nombre }}</h5>
+                                <p class="card-text">${{ product.descripcion }}</p>
+                                <p class="card-text">${{ product.precio }}</p>
+                                <button @click="addToCart(product)" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         new Vue({
             el: '#app',
             data: {
-                products: []
+                products: [],
+                cart: [] // Array para almacenar los productos en el carrito
             },
             mounted() {
                 // Realizar una solicitud HTTP para obtener los productos desde la API PHP
@@ -47,7 +64,12 @@
                     });
             },
             methods: {
-                // Agregar métodos para manejar el carrito de compras
+                // Método para agregar un producto al carrito
+                addToCart(product) {
+                    this.cart.push(product);
+                    console.log('Producto agregado al carrito:', product);
+                },
+                // Agregar otros métodos para manejar el carrito de compras según tus necesidades
             }
         });
     </script>
