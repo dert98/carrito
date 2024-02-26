@@ -9,7 +9,7 @@
 <body>
 <div class="container" id="app">
     <div class="container">
-        <h1 class="mt-5 text-center">Productos por
+        <h1 class="mt-5 text-center"> 
             <?php
                 if (!isset($_GET['categoria_id']) || empty($_GET['categoria_id'])) {
                     echo "Categoria";
@@ -25,13 +25,12 @@
                 
             ?>
         </h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-md-2">
             <div id='app'>
-                <h2>Productos</h2>
                 <div class="row">
                     <div class="col" v-for="product in products" :key="product.id">
                         <div class="card">
-                            <img :src="product.image" class="card-img-top" alt="...">
+                            <img src="./img/p_1/1.webp" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">{{ product.nombre }}</h5>
                                 <p class="card-text">${{ product.descripcion }}</p>
@@ -43,6 +42,14 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div>
+        <h2>Products</h2>
+        <ul>
+            <li v-for="product in cart" :key="product.id">
+            {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }}
+            </li>
+        </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
