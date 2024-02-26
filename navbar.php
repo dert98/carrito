@@ -31,9 +31,7 @@
                     </li>
                 </ul>
                 <ul>
-                    <?php
-                        include 'carrito.php';
-                    ?>
+                   
                 </ul>
             </div>
         </div>
