@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos por Categoría</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://dert98.github.io/Porfolio/global.css">
 </head>
 <body>
 <div class="container" id="app">
@@ -25,15 +26,15 @@
                 
             ?>
         </h1>
-        <div class="row row-cols-md-2">
+        <div class="row row-cols-md-8">
             <div id='app'>
                 <div class="row">
                     <div class="col" v-for="product in products" :key="product.id">
-                        <div class="card">
-                            <img src="./img/p_1/1.webp" class="card-img-top" alt="...">
+                        <div class="card hr3 s1 p-2 m-2">
+                            <img src="./img/p_1/1.webp" class="card-img-top" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">{{ product.nombre }}</h5>
-                                <p class="card-text">${{ product.descripcion }}</p>
+                                <p class="card-text">{{ product.descripcion }}</p>
                                 <p class="card-text">${{ product.precio }}</p>
                                 <button @click="addToCart(product)" class="btn btn-primary">Add to Cart</button>
                             </div>
@@ -44,7 +45,6 @@
         </div>
     </div>
     <div>
-        <h2>Products</h2>
         <ul>
             <li v-for="product in cart" :key="product.id">
             {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }}
