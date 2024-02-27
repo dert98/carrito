@@ -1,4 +1,5 @@
 <?php
+<<<<<<< Updated upstream
 // obtener_productos.php
 
 // Incluir el archivo de conexión
@@ -36,4 +37,23 @@ if (mysqli_num_rows($resultado) > 0) {
 
 // Cerrar conexión
 mysqli_close($conn);
+=======
+include 'conec.php';
+$sql = "SELECT * FROM productos";
+$resultado = $conexion->query($sql);
+
+// Convertir los resultados a un array asociativo
+$productos = array();
+if ($resultado->num_rows > 0) {
+    while ($fila = $resultado->fetch_assoc()) {
+        $productos[] = $fila;
+    }
+}
+
+// Devolver los datos como JSON
+echo json_encode($productos);
+
+// Cerrar la conexión
+$conexion->close();
+>>>>>>> Stashed changes
 ?>
