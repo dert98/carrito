@@ -48,6 +48,8 @@
         <ul>
             <li v-for="product in cart" :key="product.id">
             {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }}
+            <button type="button">+</button>
+            <button type="button">-</button>
             </li>
         </ul>
     </div>
@@ -83,6 +85,15 @@
                 // Método para agregar un producto al carrito
                 addToCart(product) {
                     this.cart.push(product);
+                    axios.post('addcarrito.php', {
+                        cart: this.cart
+                    })
+                    .then(response => {
+                        console.log('Carrito guardado en sesión:', response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error al guardar carrito en sesión:', error);
+                    });
                     console.log('Producto agregado al carrito:', product);
                 },
                 // Agregar otros métodos para manejar el carrito de compras según tus necesidades

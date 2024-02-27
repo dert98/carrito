@@ -27,7 +27,7 @@
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Carrito</a>
+                        <a class="nav-link" href="carrito.php">Carrito</a>
                     </li>
                 </ul>
                 <ul>
