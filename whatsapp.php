@@ -1,34 +1,33 @@
 <?php
-// Función para enviar un mensaje de WhatsApp
-function enviarMensajeWhatsApp($mensaje) {
-    $telefonoDestino = "+542213124839"; // Número de teléfono del destinatario
-    $texto = urlencode($mensaje); // Codificar el mensaje para su uso en la URL
+session_start();
 
-    // Configuración de la API de WhatsApp Business
-    $token = "TU_TOKEN_DE_ACCESO"; // Token de acceso de la API
-    $url = "https://api.whatsapp.com/send?phone={$telefonoDestino}&text={$texto}&app_absent=0&token={$token}";
-
-    // Redirigir al enlace para enviar el mensaje a través de WhatsApp
-    header("Location: {$url}");
-    exit;
+// Función para formatear el detalle del carrito como texto
+function formatCart($cart) {
+    $message = "Detalles del Carrito:\n";
+    foreach ($cart as $item) {
+        $message .= "Producto: " . $item['nombre'] . "\n";
+        $message .= "Precio: $" . $item['precio'] . "\n";
+        $message .= "Cantidad: " . $item['cantidad'] . "\n";
+        $message .= "---------------------\n";
+    }
+    return $message;
 }
 
-// Ejemplo de datos del carrito
-$carrito = [
-    ["nombre" => "Producto 1", "precio" => 10, "cantidad" => 2],
-    ["nombre" => "Producto 2", "precio" => 15, "cantidad" => 1],
-    // Agregar más productos según sea necesario
-];
-
-// Preparar el mensaje con los detalles del carrito
-$mensaje = "Detalles del carrito:\n";
-foreach ($carrito as $producto) {
-    $mensaje .= "{$producto['nombre']}: {$producto['cantidad']} x {$producto['precio']} = " . ($producto['cantidad'] * $producto['precio']) . "\n";
+// Verifica si $_SESSION['cart'] está definida y no es null
+if (isset($_SESSION['cart'])) {
+    // Obtiene los datos del carrito almacenados en la sesión
+    $cart = $_SESSION['cart'];
+    // Formatea el detalle del carrito como texto
+    $cartMessage = formatCart($cart);
+    // Codifica el mensaje para que sea parte del enlace
+    $encodedMessage = urlencode($cartMessage);
+    // Construye el enlace de WhatsApp con el detalle del carrito en el cuerpo del mensaje
+    $whatsappLink = "whatsapp://send?text=" . $encodedMessage;
+    // Redirige al enlace de WhatsApp
+    header("Location: $whatsappLink");
+    exit; // Detiene la ejecución del script después de redirigir
+} else {
+    // Si no hay datos en el carrito, redirige a una página de error o muestra un mensaje de error
+    echo "El carrito está vacío.";
 }
-$mensaje .= "Total: " . array_reduce($carrito, function ($total, $producto) {
-    return $total + ($producto['cantidad'] * $producto['precio']);
-}, 0);
-
-// Enviar el mensaje de WhatsApp
-enviarMensajeWhatsApp($mensaje);
 ?>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,43 +15,55 @@
         <label for="" class="h1">Carrito</label>
         <div class="row row-cols-md-8">
             <div id='app'>
-                <div class="row">
+                <div class="row container">
                     <div class="col">
                         <?php
-                            session_start();
-
-                            // Verifica si $_SESSION['cart'] está definida y no es nula
-                            if (isset($_SESSION['cart']) && $_SESSION['cart'] !== null) {
-                                // Si $_SESSION['cart'] tiene elementos, muestra los detalles del carrito
-                                echo '<div class="row">';
-                                foreach ($_SESSION['cart'] as $item) {
-                                    // Aquí puedes imprimir los detalles de cada elemento del carrito
-                                    echo '<div class="card s1">';
-                                        echo '<div class="card-body">';
-                                            echo '<h5 class="card-title">' . $item['nombre'] . '</h5>';
-                                            echo '<p class="card-text">' . $item['descripcion'] . '</p>';
-                                            echo '<p class="card-text">' . $item['precio'] . '</p>';
-                                        echo '</div>';
-                                    echo '</div>';
+                        session_start();
+                        // Verifica si $_SESSION['cart'] está definida y no es nula
+                        if (isset($_SESSION['cart']) && $_SESSION['cart'] !== null) {
+                            // Si $_SESSION['cart'] tiene elementos, muestra los detalles del carrito
+                            foreach ($_SESSION['cart'] as $item) {
+                                // Aquí puedes imprimir los detalles de cada elemento del carrito
+                                ?>
+                                    <div class="card mb-3">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img src="./img/p_1/1.webp" class="img-fluid rounded-start" alt="...">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        <?php echo $item['nombre']; ?>
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        <?php echo $item['descripcion']; ?>
+                                                    </p>
+                                                    <p class="card-text">Precio: $
+                                                        <?php echo $item['precio']; ?>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
                                 }
-                                echo '</div>'; // Cierre del div row
                             } else {
                                 // Si $_SESSION['cart'] está vacía o es nula, muestra un mensaje indicando que el carrito está vacío
-                                echo "<p>El carrito está vacío.</p>";
+                                echo "<p class='text-center'>El carrito está vacío.</p>";
                             }
-                        ?>
+                            ?>
                         <p class="p-2">
-                            <label for="">Cantidada de Productos: </label>
-                            <label for="">
-                                <?php 
-        echo (count($_SESSION['cart'] ));
-    ?>
+                            <label for="">Cantidad de Productos:
+                                <?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>
                             </label>
+                            <a href="whatsapp.php"><button class="btn btn-success" type="button">Comprar</button></a>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
+
+    </div>
     </div>
 </body>
 
