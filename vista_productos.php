@@ -30,8 +30,8 @@
             <div id='app'>
                 <div class="row">
                     <div class="col" v-for="product in products" :key="product.id">
-                        <div class="card hr3 s1 p-2 m-2">
-                            <img src="./img/p_1/1.webp" class="card-img-top" alt="">
+                        <div class="card hr1 s1 p-2 m-2">
+                            <img :src="product.image" class="card-img-top" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">{{ product.nombre }}</h5>
                                 <p class="card-text">{{ product.descripcion }}</p>
@@ -47,7 +47,10 @@
     <div>
         <ul>
             <li v-for="product in cart" :key="product.id">
-            {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }}
+            {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }} - Cantidad: {{ product.cantidad }}
+            <button @click="increaseQuantity(product)" class="btn btn-success">+</button>
+            <button @click="decreaseQuantity(product)" class="btn btn-danger">-</button>
+            <button @click="removeFromCart(product)" class="btn btn-warning">Eliminar</button>
             </li>
         </ul>
     </div>
@@ -82,10 +85,36 @@
             methods: {
                 // Método para agregar un producto al carrito
                 addToCart(product) {
-                    this.cart.push(product);
-                    console.log('Producto agregado al carrito:', product);
+                    let cartItem = this.cart.find(item => item.id === product.id);
+                    if (cartItem) {
+                        cartItem.cantidad++;
+                    } else {
+                        this.cart.push({
+                            id: product.id,
+                            nombre: product.nombre,
+                            descripcion: product.descripcion,
+                            precio: product.precio,
+                            cantidad: 1
+                        });
+                    }
+                    axios.post('addcarrito.php', {
+                        cart: this.cart
+                    })
                 },
-                // Agregar otros métodos para manejar el carrito de compras según tus necesidades
+                // Método para eliminar un producto del carrito
+                removeFromCart(product) {
+                    this.cart = this.cart.filter(item => item.id !== product.id);
+                },
+                // Método para aumentar la cantidad de un producto en el carrito
+                increaseQuantity(product) {
+                    product.cantidad++;
+                },
+                // Método para disminuir la cantidad de un producto en el carrito
+                decreaseQuantity(product) {
+                    if (product.cantidad > 1) {
+                        product.cantidad--;
+                    }
+                }
             }
         });
     </script>
