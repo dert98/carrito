@@ -10,61 +10,96 @@
 
 </head>
 
-<body>
-    <div class="text-center">
-        <label for="" class="h1">Carrito</label>
-        <div class="row row-cols-md-8">
-            <div id='app'>
-                <div class="row container">
-                    <div class="col">
-                        <?php
-                        session_start();
-                        // Verifica si $_SESSION['cart'] está definida y no es nula
-                        if (isset($_SESSION['cart']) && $_SESSION['cart'] !== null) {
-                            // Si $_SESSION['cart'] tiene elementos, muestra los detalles del carrito
-                            foreach ($_SESSION['cart'] as $item) {
-                                // Aquí puedes imprimir los detalles de cada elemento del carrito
-                                ?>
-                                    <div class="card mb-3">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <img src="./img/p_1/1.webp" class="img-fluid rounded-start" alt="...">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">
-                                                        <?php echo $item['nombre']; ?>
-                                                    </h5>
-                                                    <p class="card-text">
-                                                        <?php echo $item['descripcion']; ?>
-                                                    </p>
-                                                    <p class="card-text">Precio: $
-                                                        <?php echo $item['precio']; ?>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                            } else {
-                                // Si $_SESSION['cart'] está vacía o es nula, muestra un mensaje indicando que el carrito está vacío
-                                echo "<p class='text-center'>El carrito está vacío.</p>";
-                            }
-                            ?>
-                        <p class="p-2">
-                            <label for="">Cantidad de Productos:
-                                <?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?>
-                            </label>
-                            <a href="whatsapp.php"><button class="btn btn-success" type="button">Comprar</button></a>
-                        </p>
-                    </div>
+<body>   
+    <div id="app">
+        <div v-for="product in cart" :key="product.id">
+            <div class="card s1 p-2 m-2">
+                <img :src="product.image" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.nombre }}</h5>
+                    <p class="card-text">{{ product.descripcion }}</p>
+                    <p class="card-text">${{ product.precio }}</p>
+                    <p class="card-text">Cantidad: {{ product.cantidad }}</p>
+                    <p class="card-text">Subtotal: ${{ product.cantidad * product.precio }}</p>
+                    <button @click="increaseQuantity(product)" class="btn btn-success">+</button>
+                    <button @click="decreaseQuantity(product)" class="btn btn-danger">-</button>
+                    <button @click="removeFromCart(product)" class="btn btn-warning">Eliminar</button>
                 </div>
             </div>
         </div>
+        <div class="mt-3">
+            <h5>Total a pagar: ${{ totalAmount }}</h5>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+         new Vue({
+            el: '#app',
+            data: {
+                products: [],
+                cart: [], // Array para almacenar los productos en el carrito
+                categoria_id: null, // Variable para almacenar el ID de la categoría seleccionada
+                total: 0 // Variable para almacenar el total a pagar del carrito
+            },
+            mounted() {
+                // Obtener el ID de la categoría desde la URL
+                const urlParams = new URLSearchParams(window.location.search);
+                this.categoria_id = urlParams.get('categoria_id');
 
-    </div>
-    </div>
+                // Realizar una solicitud HTTP para obtener los productos desde la API PHP
+                axios.get('addcarrito.php?tipe=show')
+                .then(response => {
+                    this.cart = response.data;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los productos:', error);
+                });
+            },
+            methods: {
+                // Método para agregar un producto al carrito
+                addToCart(product) {
+                    let cartItem = this.cart.find(item => item.id === product.id);
+                    if (cartItem) {
+                        cartItem.cantidad++;
+                    } else {
+                        this.cart.push({
+                            id: product.id,
+                            nombre: product.nombre,
+                            descripcion: product.descripcion,
+                            precio: product.precio,
+                            cantidad: 1
+                        });
+                    }
+                    axios.post('addcarrito.php', {
+                        cart: this.cart
+                    })
+                },
+                // Método para eliminar un producto del carrito
+                removeFromCart(product) {
+                    this.cart = this.cart.filter(item => item.id !== product.id);
+                },
+                // Método para aumentar la cantidad de un producto en el carrito
+                increaseQuantity(product) {
+                    product.cantidad++;
+                },
+                // Método para disminuir la cantidad de un producto en el carrito
+                decreaseQuantity(product) {
+                    if (product.cantidad > 1) {
+                        product.cantidad--;
+                    }
+                }
+            },
+            computed: {
+                // Método computado para calcular el total a pagar del carrito
+                totalAmount() {
+                    return this.cart.reduce((total, product) => {
+                        return total + (product.precio * product.cantidad);
+                    }, 0);
+                }
+            }
+        });
+    </script>
 </body>
-
+    
 </html>

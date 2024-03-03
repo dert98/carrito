@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="https://dert98.github.io/Porfolio/global.css">
 </head>
 <body>
-    <div class="text-center bg1">
+    <div class="text-center">
         <p class="bg1 p-2"><img style="width: 23px; margin-top: -5px; margin-right: 10px;" src="https://olivostore.pe/wp-content/uploads/2022/02/icon-gift.png">S/10.00 de descuento en tu primer pedido con el cupón OLIVO10</p>
-        <label class="text-center t2 p-2" for=""><img style="width: 23px; margin-top: -5px; margin-right: 10px;" src="https://olivostore.pe/wp-content/uploads/2022/02/icon-delivery.png">Delivery gratis a todo el Perú este mes</label>
+        <div class="bg4">
+            <label class="text-center t2 p-2" for=""><img style="width: 23px; margin-top: -5px; margin-right: 10px;" src="https://olivostore.pe/wp-content/uploads/2022/02/icon-delivery.png">Delivery gratis a todo el Perú este mes</label>
+        </div>
     </div>
     <?php
         include 'conec.php';
