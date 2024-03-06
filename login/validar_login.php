@@ -25,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } else {
         $mensaje_error = 'Usuario o contraseña incorrectos';
-        // Puedes incluir nuevamente la vista de login y mostrar el mensaje de error aquí
-        // require_once 'vista_login.php';
+        header('Location: /carrito/login/login.php');
+        exit;
     }
 }
 ?>

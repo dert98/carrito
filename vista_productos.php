@@ -53,16 +53,6 @@
             </div>
         </div>
     </div>
-    <div>
-        <ul>
-            <li v-for="product in cart" :key="product.id">
-                {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }} - Cantidad: {{ product.cantidad }}
-                <button @click="increaseQuantity(product)" class="btn btn-success">+</button>
-                <button @click="decreaseQuantity(product)" class="btn btn-danger">-</button>
-                <button @click="removeFromCart(product)" class="btn btn-warning">Eliminar</button>
-            </li>
-        </ul>
-    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -110,7 +100,8 @@
                         nombre: product.nombre,
                         descripcion: product.descripcion,
                         precio: product.precio,
-                        cantidad: 1
+                        cantidad: 1,
+                        imagen: product.nombre
                     });
                 }
                 this.updateCart();
@@ -135,6 +126,9 @@
             },
             updateCart() {
                 localStorage.setItem('cart', JSON.stringify(this.cart));
+                axios.post('addcarrito.php', {
+                        cart: this.cart
+                    })
             },
             calculateTotalProductsInCart() {
                 this.totalProductsInCart = this.cart.reduce((total, item) => total + item.cantidad, 0);

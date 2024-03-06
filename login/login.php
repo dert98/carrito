@@ -31,6 +31,7 @@
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            <a href="/carrito/"><button class="btn btn-success btn-block mt-2" type="button">Regresar</button></a>
                         </form>
                     </div>
                 </div>
