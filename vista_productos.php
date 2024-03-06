@@ -101,7 +101,7 @@
                         descripcion: product.descripcion,
                         precio: product.precio,
                         cantidad: 1,
-                        imagen: product.nombre
+                        imagen: product.imagen
                     });
                 }
                 this.updateCart();

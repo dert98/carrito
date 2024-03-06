@@ -38,7 +38,7 @@
             el: '#app',
             data: {
                 products: [],
-                cart: [], // Array para almacenar los productos en el carrito
+                cart: JSON.parse(localStorage.getItem('cart')) || [],
                 categoria_id: null, // Variable para almacenar el ID de la categoría seleccionada
                 total: 0 // Variable para almacenar el total a pagar del carrito
             },
@@ -59,35 +59,47 @@
             methods: {
                 // Método para agregar un producto al carrito
                 addToCart(product) {
-                    let cartItem = this.cart.find(item => item.id === product.id);
-                    if (cartItem) {
-                        cartItem.cantidad++;
-                    } else {
-                        this.cart.push({
-                            id: product.id,
-                            nombre: product.nombre,
-                            descripcion: product.descripcion,
-                            precio: product.precio,
-                            cantidad: 1
-                        });
-                    }
-                    axios.post('addcarrito.php', {
-                        cart: this.cart
-                    })
+                let cartItem = this.cart.find(item => item.id === product.id);
+                if (cartItem) {
+                    cartItem.cantidad++;
+                } else {
+                    this.cart.push({
+                        id: product.id,
+                        nombre: product.nombre,
+                        descripcion: product.descripcion,
+                        precio: product.precio,
+                        cantidad: 1,
+                        imagen: product.imagen
+                    });
+                }
+                this.updateCart();
+                this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                 },
-                // Método para eliminar un producto del carrito
                 removeFromCart(product) {
                     this.cart = this.cart.filter(item => item.id !== product.id);
+                    this.updateCart();
+                    this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                 },
-                // Método para aumentar la cantidad de un producto en el carrito
                 increaseQuantity(product) {
                     product.cantidad++;
+                    this.updateCart();
+                    this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                 },
-                // Método para disminuir la cantidad de un producto en el carrito
                 decreaseQuantity(product) {
                     if (product.cantidad > 1) {
                         product.cantidad--;
+                        this.updateCart();
+                        this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                     }
+                },
+                updateCart() {
+                    localStorage.setItem('cart', JSON.stringify(this.cart));
+                    axios.post('addcarrito.php', {
+                            cart: this.cart
+                        })
+                },
+                calculateTotalProductsInCart() {
+                    this.totalProductsInCart = this.cart.reduce((total, item) => total + item.cantidad, 0);
                 }
             },
             computed: {
