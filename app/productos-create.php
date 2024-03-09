@@ -76,7 +76,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <h2>Create Record</h2>
                     </div>
                     <p>Please fill this form and submit to add a record to the database.</p>
+<<<<<<< HEAD
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
+=======
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+>>>>>>> 327ad93119abef2f57c7b29b7633070aca53daca
                         <div class="form-group">
                             <label>nombre</label>
                             <input type="text" name="nombre" maxlength="100" class="form-control"
