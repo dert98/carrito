@@ -30,7 +30,7 @@
             <div v-if="products.length > 0" class="row row-cols-md-4">
                 <div class="col" v-for="product in products" :key="product.id">
                     <div class="card hr1 s1 p-2 m-2">
-                        <img src="./img/p_1/1.webp" class="card-img-top img-fluid" alt="" style="max-width: 100%; height: auto;">
+                        <img :src="'./img/p' + product.id + '/1.webp'" class="card-img-top img-fluid bg2" alt="" style="max-width: 100%; height: auto;">
                         <div class="card-body">
                             <h5 class="card-title">{{ product.nombre }}</h5>
                             <p class="card-text">{{ product.descripcion }}</p>

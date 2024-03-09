@@ -5,38 +5,47 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "config.php";
     require_once "helpers.php";
 
-    // Prepare a delete statement
-    $sql = "DELETE FROM categorias WHERE id = ?";
+    // Prepare a delete statement for products associated with the category
+    $sql_delete_products = "DELETE FROM productos WHERE categoria_id = ?";
+    $stmt_delete_products = mysqli_prepare($link, $sql_delete_products);
 
-    if($stmt = mysqli_prepare($link, $sql)){
-        // Set parameters
-        $param_id = trim($_POST["id"]);
+    // Set parameter for the category ID
+    $param_id = trim($_POST["id"]);
+    mysqli_stmt_bind_param($stmt_delete_products, "i", $param_id);
 
-        // Bind variables to the prepared statement as parameters
-		if (is_int($param_id)) $__vartype = "i";
-		elseif (is_string($param_id)) $__vartype = "s";
-		elseif (is_numeric($param_id)) $__vartype = "d";
-		else $__vartype = "b"; // blob
-        mysqli_stmt_bind_param($stmt, $__vartype, $param_id);
+    // Attempt to execute the prepared statement for deleting products
+    if(mysqli_stmt_execute($stmt_delete_products)){
+        // Close statement
+        mysqli_stmt_close($stmt_delete_products);
 
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            // Records deleted successfully. Redirect to landing page
-            header("location: categorias-index.php");
-            exit();
-        } else{
-            echo "Oops! Something went wrong. Please try again later.<br>".$stmt->error;
+        // Prepare a delete statement for the category
+        $sql_delete_category = "DELETE FROM categorias WHERE id = ?";
+
+        if($stmt_delete_category = mysqli_prepare($link, $sql_delete_category)){
+            // Bind variable to the prepared statement as parameter
+            mysqli_stmt_bind_param($stmt_delete_category, "i", $param_id);
+
+            // Attempt to execute the prepared statement for deleting category
+            if(mysqli_stmt_execute($stmt_delete_category)){
+                // Records deleted successfully. Redirect to landing page
+                header("location: categorias-index.php");
+                exit();
+            } else{
+                echo "Oops! Something went wrong. Please try again later.<br>" . $stmt_delete_category->error;
+            }
         }
-    }
 
-    // Close statement
-    mysqli_stmt_close($stmt);
+        // Close statement
+        mysqli_stmt_close($stmt_delete_category);
+    } else {
+        echo "Oops! Something went wrong. Please try again later.<br>" . $stmt_delete_products->error;
+    }
 
     // Close connection
     mysqli_close($link);
-} else{
+} else {
     // Check existence of id parameter
-	$_GET["id"] = trim($_GET["id"]);
+    $_GET["id"] = trim($_GET["id"]);
     if(empty($_GET["id"])){
         // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
