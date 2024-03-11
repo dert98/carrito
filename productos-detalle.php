@@ -4,8 +4,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
     // Incluir el archivo de configuración
     try {
         // Crear una conexión PDO
-        $host = '';
-        $pdo = new PDO("mysql:host=$host;dbname=web", 'root', '');
+        $pdo = new PDO("mysql:host=localhost;dbname=web", 'root', '');
         // Configurar el modo de error para que lance excepciones
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         

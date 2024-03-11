@@ -35,7 +35,10 @@
                             <h5 class="card-title">{{ product.nombre }}</h5>
                             <p class="card-text">{{ product.descripcion }}</p>
                             <p class="card-text">${{ product.precio }}</p>
-                            <p><a href="productos-detalle.php?id={{ product.id }}">Detalle</a></p>
+                            <p>
+                                <a :href="'productos-detalle.php?id=' + product.id">Detalle</a>
+                            </p>
+
                             <button @click="addToCart(product)" class="btn btn-primary">Add to Cart</button>
                         </div>
                     </div>
