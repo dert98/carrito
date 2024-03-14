@@ -8,8 +8,15 @@ session_start();
 $nombreUsuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'bienvenido';
 ?>
 
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container justify-content-center">
+
+    <a id="navBar-item" class="navbar-brand" href="/" data-toggle="tooltip" data-placement="bottom" title="Logo">
+      <img class="img-fluid" src="img/logo.png" alt="logo" width="50" height="50">
+    </a>
+
+
         <a class="navbar-brand" href="#">Tienda</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,7 +27,7 @@ $nombreUsuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'bienvenid
                     <a class="nav-link" href="#">Ofertas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contactos</a>
+                    <a class="nav-link" href="footer.php">Contactos</a>
                 </li>
                 <?php
                     if (isset($_SESSION['usuario'])) {
