@@ -13,7 +13,8 @@ if (isset($_GET['categoria_id']) && !empty($_GET['categoria_id'])) {
     $sql = "SELECT * FROM productos WHERE categoria_id = $categoria_id";
 } else {
     // Si no se proporciona un ID de categoría, obtener todos los productos
-    $sql = "SELECT * FROM productos";
+    $sql = "SELECT * FROM productos ORDER BY id DESC LIMIT 15;
+    ";
 }
 // Ejecutar la consulta
 $resultado = mysqli_query($conn, $sql);
