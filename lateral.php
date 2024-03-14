@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Agrega los enlaces a tus archivos CSS aquí -->
 </head>
 <body>
-    <nav class="navbar h-100 w-50 navbar-expand-md navbar-dark bg-dark flex-md-column flex-row align-items-start">
+    <!-- Navbar vertical -->
+    <nav class="navbar h-100 w-50 navbar-expand-md navbar-dark bg-dark flex-md-column flex-row align-items-start navbar-vertical">
         <!-- Botón de hamburguesa para dispositivos pequeños -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
             <span class="navbar-toggler-icon"></span>
