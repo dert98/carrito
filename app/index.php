@@ -24,6 +24,7 @@
         <legend>Modo Administrador</legend>
         <div class="form-group">
             <p>Seleccione la base de datos a trabajar</p>
+            <a href="/carrito" class="btn btn-secondary">Back</a>
             <a href="categorias-index.php" class="btn btn-primary" role="button">Categorías</a>
             <a href="productos-index.php" class="btn btn-primary" role="button">Productos</a>
             <!-- TABLE_BUTTONS -->

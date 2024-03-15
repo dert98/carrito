@@ -30,12 +30,18 @@
             <div v-if="products.length > 0" class="row row-cols-md-4">
                 <div class="col" v-for="product in products" :key="product.id">
                     <div class="card hr1 s1 p-2 m-2">
-                        <img src="./img/p_1/1.webp" class="card-img-top img-fluid" alt="" style="max-width: 100%; height: auto;">
+                        <img :src="'./img/p' + product.id + '/1.webp'" class="card-img-top img-fluid bg2" alt="" style="max-width: 100%; height: auto;">
                         <div class="card-body">
                             <h5 class="card-title">{{ product.nombre }}</h5>
+                            <details>
                             <p class="card-text">{{ product.descripcion }}</p>
+                            </details>
                             <p class="card-text">${{ product.precio }}</p>
-                            <button @click="addToCart(product)" class="btn btn-primary">Add to Cart</button>
+                            <p>
+                                <a :href="'productos-detalle.php?id=' + product.id">Detalle</a>
+                            </p>
+
+                            <button @click="addToCart(product)" class="btn btn-primary"><b>+</b> Al carrito</button>
                         </div>
                     </div>
                 </div>
@@ -53,17 +59,9 @@
             </div>
         </div>
     </div>
-    <div>
-        <ul>
-            <li v-for="product in cart" :key="product.id">
-                {{ product.id }} - {{ product.nombre }} - ${{ product.descripcion }}- ${{ product.precio }} - Cantidad: {{ product.cantidad }}
-                <button @click="increaseQuantity(product)" class="btn btn-success">+</button>
-                <button @click="decreaseQuantity(product)" class="btn btn-danger">-</button>
-                <button @click="removeFromCart(product)" class="btn btn-warning">Eliminar</button>
-            </li>
-        </ul>
-    </div>
 </div>
+<br>
+
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -110,7 +108,8 @@
                         nombre: product.nombre,
                         descripcion: product.descripcion,
                         precio: product.precio,
-                        cantidad: 1
+                        cantidad: 1,
+                        imagen: product.imagen
                     });
                 }
                 this.updateCart();
@@ -135,6 +134,9 @@
             },
             updateCart() {
                 localStorage.setItem('cart', JSON.stringify(this.cart));
+                axios.post('addcarrito.php', {
+                        cart: this.cart
+                    })
             },
             calculateTotalProductsInCart() {
                 this.totalProductsInCart = this.cart.reduce((total, item) => total + item.cantidad, 0);
