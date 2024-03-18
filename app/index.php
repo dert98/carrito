@@ -1,3 +1,10 @@
+<?php
+// Iniciar la sesión
+session_start();
+
+// Verificar si la variable de sesión 'usuario' está definida y no es nula
+if(isset($_SESSION['usuario'])) {
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,8 +34,17 @@
             <a href="/carrito" class="btn btn-secondary">Back</a>
             <a href="categorias-index.php" class="btn btn-primary" role="button">Categorías</a>
             <a href="productos-index.php" class="btn btn-primary" role="button">Productos</a>
+            <a href="login/cerrar_sesion.php" class="btn btn-danger" role="button">Cerrar Sesion</a>
             <!-- TABLE_BUTTONS -->
         </div>
     </div>
 </body>
 </html>
+<?php
+} else {
+    // Si la sesión no está iniciada, redirigir al usuario a la página de inicio de sesión
+    header('Location: /carrito/login/login.php');
+    exit();
+}
+?>
+

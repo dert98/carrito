@@ -27,6 +27,22 @@
             ?>
         </h1>
         <div id='app'>
+            <!-- Bootstrap Modal for confirmation message -->
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationModalLabel">Producto Agregado al Carrito</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Nombre: {{ productAdded.nombre }}</p>
+                            <p>Precio: ${{ productAdded.precio }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div v-if="products.length > 0" class="row row-cols-md-4">
                 <div class="col" v-for="product in products" :key="product.id">
                     <div class="card hr1 s1 p-2 m-2">
@@ -67,7 +83,9 @@
             products: [],
             cart: JSON.parse(localStorage.getItem('cart')) || [],
             categoria_id: null,
-            totalProductsInCart: 0 // Agrega una nueva propiedad para almacenar la cantidad total de productos en el carrito
+            totalProductsInCart: 0,
+            confirmationMessage: '', // Confirmation message property
+            productAdded: {} // Product added to cart property
         },
         mounted() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -78,7 +96,7 @@
             }
 
             this.fetchProducts();
-            this.calculateTotalProductsInCart(); // Calcula la cantidad total de productos al cargar la página
+            this.calculateTotalProductsInCart();
         },
         methods: {
             fetchProducts() {
@@ -109,23 +127,27 @@
                     });
                 }
                 this.updateCart();
-                this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
+                this.calculateTotalProductsInCart();
+                this.confirmationMessage = 'Producto agregado al carrito.';
+                this.productAdded = product; // Set the product added to cart
+                var myModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                myModal.show();
             },
             removeFromCart(product) {
                 this.cart = this.cart.filter(item => item.id !== product.id);
                 this.updateCart();
-                this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
+                this.calculateTotalProductsInCart();
             },
             increaseQuantity(product) {
                 product.cantidad++;
                 this.updateCart();
-                this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
+                this.calculateTotalProductsInCart();
             },
             decreaseQuantity(product) {
                 if (product.cantidad > 1) {
                     product.cantidad--;
                     this.updateCart();
-                    this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
+                    this.calculateTotalProductsInCart();
                 }
             },
             updateCart() {

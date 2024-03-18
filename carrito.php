@@ -4,114 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Detalle del Carrito</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://dert98.github.io/Porfolio/global.css">
-
 </head>
 
-<body>   
-    <div id="app">
-        <div v-for="product in cart" :key="product.id">
-            <div class="card s1 p-2 m-2">
-                <img :src="product.image" class="card-img-top" alt="">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.nombre }}</h5>
-                    <p class="card-text">{{ product.descripcion }}</p>
-                    <p class="card-text">${{ product.precio }}</p>
-                    <p class="card-text">Cantidad: {{ product.cantidad }}</p>
-                    <p class="card-text">Subtotal: ${{ product.cantidad * product.precio }}</p>
-                    <button @click="increaseQuantity(product)" class="btn btn-success">+</button>
-                    <button @click="decreaseQuantity(product)" class="btn btn-danger">-</button>
-                    <button @click="removeFromCart(product)" class="btn btn-warning">Eliminar</button>
+<body>
+    <div class="container" id="app">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col">
+                        <h2 class="mt-5">Detalle del Carrito</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div v-for="product in cart" :key="product.id" class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img :src="'img/p' + product.id + '/1.webp'" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.nombre }}</h5>
+                                        <p class="card-text">{{ product.descripcion }}</p>
+                                        <p class="card-text">Precio: ${{ product.precio }}</p>
+                                        <p class="card-text">Cantidad: {{ product.cantidad }}</p>
+                                        <p class="card-text">Subtotal: ${{ product.precio * product.cantidad }}</p>
+                                        <div class="btn-group" role="group">
+                                            <button @click="decreaseQuantity(product)" class="btn btn-secondary">-</button>
+                                            <button @click="increaseQuantity(product)" class="btn btn-secondary">+</button>
+                                            <button @click="removeFromCart(product)" class="btn btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-3">
-            <h5>Total a pagar: ${{ totalAmount }}</h5>
+            <div class="col-lg-4">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Total a pagar</h5>
+                        <p class="card-text">Total: ${{ totalAmount }}</p>
+                        <!-- Botón de WhatsApp -->
+                        <a :href="'whatsapp://send?phone=+542216124839&text=' + encodeURIComponent(mensaje)" target="_blank">
+                            <button class="btn btn-success">Contactar por WhatsApp</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-         new Vue({
+        new Vue({
             el: '#app',
             data: {
-                products: [],
                 cart: JSON.parse(localStorage.getItem('cart')) || [],
-                categoria_id: null, // Variable para almacenar el ID de la categoría seleccionada
-                total: 0 // Variable para almacenar el total a pagar del carrito
-            },
-            mounted() {
-                // Obtener el ID de la categoría desde la URL
-                const urlParams = new URLSearchParams(window.location.search);
-                this.categoria_id = urlParams.get('categoria_id');
-
-                // Realizar una solicitud HTTP para obtener los productos desde la API PHP
-                axios.get('addcarrito.php?tipe=show')
-                .then(response => {
-                    this.cart = response.data;
-                })
-                .catch(error => {
-                    console.error('Error al obtener los productos:', error);
-                });
+                mensaje: ""
             },
             methods: {
-                // Método para agregar un producto al carrito
-                addToCart(product) {
-                let cartItem = this.cart.find(item => item.id === product.id);
-                if (cartItem) {
-                    cartItem.cantidad++;
-                } else {
-                    this.cart.push({
-                        id: product.id,
-                        nombre: product.nombre,
-                        descripcion: product.descripcion,
-                        precio: product.precio,
-                        cantidad: 1,
-                        imagen: product.imagen
-                    });
-                }
-                this.updateCart();
-                this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
-                },
                 removeFromCart(product) {
                     this.cart = this.cart.filter(item => item.id !== product.id);
                     this.updateCart();
-                    this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                 },
                 increaseQuantity(product) {
                     product.cantidad++;
                     this.updateCart();
-                    this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                 },
                 decreaseQuantity(product) {
                     if (product.cantidad > 1) {
                         product.cantidad--;
                         this.updateCart();
-                        this.calculateTotalProductsInCart(); // Recalcula la cantidad total de productos al modificar el carrito
                     }
                 },
                 updateCart() {
                     localStorage.setItem('cart', JSON.stringify(this.cart));
-                    axios.post('addcarrito.php', {
-                            cart: this.cart
-                        })
-                },
-                calculateTotalProductsInCart() {
-                    this.totalProductsInCart = this.cart.reduce((total, item) => total + item.cantidad, 0);
+                    // Actualiza el mensaje con los productos en el carrito
+                    this.mensaje = "¡Hola! Quisiera realizar un pedido con los siguientes productos:\n";
+                    this.cart.forEach(product => {
+                        this.mensaje += product.nombre + " - Cant: " + product.cantidad + " - Precio: $" + product.precio + "\n";
+                    });
+                    this.mensaje += "Total: $" + this.totalAmount + ". ¿Cómo puedo proceder?";
                 }
+
             },
             computed: {
-                // Método computado para calcular el total a pagar del carrito
                 totalAmount() {
                     return this.cart.reduce((total, product) => {
                         return total + (product.precio * product.cantidad);
                     }, 0);
                 }
+            },
+            created() {
+                // Actualiza el mensaje al cargar la página
+                this.updateCart();
             }
         });
     </script>
 </body>
-    
+
 </html>

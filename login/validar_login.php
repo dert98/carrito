@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuario) {
         session_start();
         $_SESSION['usuario'] = $usuario['username'];
-        header('Location: /carrito');
+        header('Location: /carrito/app');
         exit;
     } else {
         $mensaje_error = 'Usuario o contraseña incorrectos';
