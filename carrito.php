@@ -48,16 +48,44 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <h5 class="card-title">Total a pagar</h5>
+                        <p class="card-text">Cantidad de productos: {{ totalProducts }}</p>
                         <p class="card-text">Total: ${{ totalAmount }}</p>
                         <!-- Botón de WhatsApp -->
                         <a :href="'whatsapp://send?phone=+542216124839&text=' + encodeURIComponent(mensaje)" target="_blank">
                             <button class="btn btn-success">Contactar por WhatsApp</button>
                         </a>
+                        <!-- Botón para limpiar el carrito -->
+                        <button @click="clearCart" class="btn btn-danger mt-2">Limpiar Carrito</button>
+                        <!-- Botón para volver al inicio -->
+                        <a href="./" class="btn btn-primary mt-2">Volver al Inicio</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        .whatsapp-icon,
+        .other-icon {
+            position: fixed;
+            width: 50px; /* Ajusta el tamaño según sea necesario */
+            height: 50px; /* Ajusta el tamaño según sea necesario */
+            z-index: 1000; /* Asegura que estén por encima de otros elementos */
+            cursor: pointer;
+        }
+
+        .whatsapp-icon {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .other-icon {
+            bottom: 100px; /* Ajusta la posición vertical según sea necesario */
+            right: 20px;
+        }
+        .icon-black {
+            filter: invert(100%);
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
@@ -90,13 +118,21 @@
                         this.mensaje += product.nombre + " - Cant: " + product.cantidad + " - Precio: $" + product.precio + "\n";
                     });
                     this.mensaje += "Total: $" + this.totalAmount + ". ¿Cómo puedo proceder?";
+                },
+                clearCart() {
+                    this.cart = [];
+                    this.updateCart();
                 }
-
             },
             computed: {
                 totalAmount() {
                     return this.cart.reduce((total, product) => {
                         return total + (product.precio * product.cantidad);
+                    }, 0);
+                },
+                totalProducts() {
+                    return this.cart.reduce((total, product) => {
+                        return total + product.cantidad;
                     }, 0);
                 }
             },
