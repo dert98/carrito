@@ -30,13 +30,10 @@
         }
     </style>
     <!-- Primer icono -->
-    <a href="https://wa.me/tunumero" target="_blank" class="whatsapp-link">
+    <a href="/carrito/carrito.php" class="whatsapp-link">
         <img src="img/wsp.png" alt="WhatsApp" class="whatsapp-icon">
     </a>
     <!-- Segundo icono -->
-    <a href="carrito.php" class="other-link">
-        <img src="https://olivostore.pe/wp-content/uploads/2022/02/icon-delivery.png" alt="Otro" class="other-icon icon-black">
-    </a>
 </body>
 </body>
 </html>

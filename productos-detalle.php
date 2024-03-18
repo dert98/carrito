@@ -48,8 +48,11 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Detalle de producto</title>
+    <link rel="stylesheet" href="public/css/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
@@ -64,8 +67,8 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
         <div class="row">
             <div class="col-md-6">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner bg-primary">
-                        <?php echo generarSliderImagenes("./img/p1/"); ?>
+                    <div class="carousel-inner">
+                        <?php echo generarSliderImagenes("img/p1/"); ?>
                     </div>
                     <!-- Controles del slider -->
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -100,10 +103,29 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
                     <p class="form-control-static"><?php echo $row["imagen"]; ?></p>
                 </div>
 
-                <p><a href="/carrito" class="btn btn-primary">Atras</a></p>
+                <p><a href="#" class="btn btn-primary">Atras</a></p>
             </div>
         </div>
     </div>
+
+
+    <br>
+    <h1>Slider #1</h1>
+  <div class="carrusel">
+    <ul class="carrusel-fotos">
+    <li id="foto1"><img class="" style="height: 400; width: 300 " src="img/p<?php echo $row["id"]; ?>./1.webp" alt=""></li>
+    <li id="foto1"><img class="" style="height: 400; width: 300 " src="img/p<?php echo $row["id"]; ?>./2.webp" alt=""></li>
+
+    </ul>
+    <ul class="carrusel-menu">
+    <li id="foto1"><img class="" style="height: 400; width: 300 " src="img/p<?php echo $row["id"]; ?>./1.webp" alt=""></li>
+    <li id="foto1"><img class="" style="height: 400; width: 300 " src="img/p<?php echo $row["id"]; ?>./2.webp" alt=""></li>
+ 
+    </ul>
+  </div>
+
+
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.1/dist/umd/popper.min.js" integrity="sha384-FZNtAtjJ8Sb4W+3G2GtFsJ/xXIVbpJ5rCVa+a7CLQ2Se+U3N2QNOZlsOw+2jnYlS" crossorigin="anonymous"></script>
