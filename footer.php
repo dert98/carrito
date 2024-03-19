@@ -46,7 +46,6 @@
                     <ul class="list-unstyled">
                         <li><a href="#">Inicio</a></li>
                         <li><a href="#">Productos</a></li>
-                        <li><a href="#">Contacto</a></li>
                         <li><a href="#">Acerca de nosotros</a></li>
                     </ul>
                 </div>
@@ -57,6 +56,9 @@
                     <p>Email: info@tudominio.com</p>
                 </div>
             </div>
+        </div>
+        <div>
+            <p class="text-center">Copyright DertDriver @2024</p>
         </div>
     </footer>
 </body>

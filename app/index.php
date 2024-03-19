@@ -32,8 +32,12 @@ if(isset($_SESSION['usuario'])) {
 </head>
 
 <body>
-    <div class="container text-center mt-5 card s1">
-        <legend class="h1 mt-5">Modo Administrador</legend>
+    <div class="container text-center card s1">
+        <legend class="h2 mt-4">Modo Administrador</legend>
+        <div>
+            <a href="/carrito" class="btn btn-secondary">Web</a>
+            <a href="../login/cerrar_sesion.php" class="btn btn-danger" role="button">Cerrar Sesion</a>
+        </div>
         <div>
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
     id="Layer_1" x="0px" y="0px" width="200px" height="300px" viewBox="0 0 40 40"
@@ -94,12 +98,10 @@ if(isset($_SESSION['usuario'])) {
             </svg>
 
         </div>
-        <div class="form-group">
-            <p>Seleccione la base de datos a trabajar</p>
-            <a href="/carrito" class="btn btn-secondary">Web</a>
-            <a href="categorias-index.php" class="btn btn-primary" role="button">Categorías</a>
-            <a href="productos-index.php" class="btn btn-primary" role="button">Productos</a>
-            <a href="../login/cerrar_sesion.php" class="btn btn-danger" role="button">Cerrar Sesion</a>
+        <div class="form-group card">
+            <p class="h4">Seleccione tabla a trabajar</p>
+            <a href="categorias-index.php" class="btn btn-primary mt-2" role="button">Categorías</a>
+            <a href="productos-index.php" class="btn btn-primary mt-2" role="button">Productos</a>
             <!-- TABLE_BUTTONS -->
         </div>
     </div>

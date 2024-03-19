@@ -7,6 +7,7 @@
     <title>Detalle del Carrito</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://dert98.github.io/Porfolio/global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -15,11 +16,11 @@
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col">
-                        <h2 class="mt-5">Detalle del Carrito</h2>
+                        <h1 class="mt-5 text-center">Productos seleccionados</h1>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col mt-4">
                         <div v-for="product in cart" :key="product.id" class="card mb-3">
                             <div class="row g-0">
                                 <div class="col-md-4">
@@ -27,15 +28,23 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ product.nombre }}</h5>
+                                        <h4 class="card-title">{{ product.nombre }}</h4>
                                         <p class="card-text">{{ product.descripcion }}</p>
                                         <p class="card-text">Precio: ${{ product.precio }}</p>
                                         <p class="card-text">Cantidad: {{ product.cantidad }}</p>
                                         <p class="card-text">Subtotal: ${{ product.precio * product.cantidad }}</p>
                                         <div class="btn-group" role="group">
-                                            <button @click="decreaseQuantity(product)" class="btn btn-secondary">-</button>
-                                            <button @click="increaseQuantity(product)" class="btn btn-secondary">+</button>
-                                            <button @click="removeFromCart(product)" class="btn btn-danger">Eliminar</button>
+                                        <button @click="decreaseQuantity(product)" class="btn btn-secondary me-2 fa-xs" title="Disminuir cantidad">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button @click="increaseQuantity(product)" class="btn btn-secondary me-2 fa-xs" title="Aumentar cantidad">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button @click="removeFromCart(product)" class="btn btn-danger" title="Eliminar Producto">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -44,23 +53,32 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4" style="position: fixed; top: 50px; right: 50px;">
                 <div class="card mt-5">
                     <div class="card-body">
-                        <h5 class="card-title">Total a pagar</h5>
+                        <h4 class="card-title">Total a pagar</h4>
                         <p class="card-text">Cantidad de productos: {{ totalProducts }}</p>
                         <p class="card-text">Total: ${{ totalAmount }}</p>
                         <!-- Botón de WhatsApp -->
+
                         <a :href="'whatsapp://send?phone=+542216124839&text=' + encodeURIComponent(mensaje)" target="_blank">
-                            <button class="btn btn-success">Contactar por WhatsApp</button>
+                        <button class="btn btn-success">
+                            <i class="fab fa-whatsapp"></i> Enviar WhatsApp
+                        </button>
                         </a>
-                        <!-- Botón para limpiar el carrito -->
-                        <button @click="clearCart" class="btn btn-danger mt-2">Limpiar Carrito</button>
-                        <!-- Botón para volver al inicio -->
-                        <a href="./" class="btn btn-primary mt-2">Volver al Inicio</a>
-                    </div>
+                        
+
+                        <button class="btn btn-danger mt-2" @click="clearCart">
+                            <i class="fas fa-trash-alt"></i> Limpiar Carrito
+                        </button>
+
+                        <a href="./" class="btn btn-primary mt-2">
+                            <i class="fas fa-home"></i> Volver al Inicio
+                        </a>
+
                 </div>
             </div>
+
         </div>
     </div>
     <style>

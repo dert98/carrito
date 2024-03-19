@@ -15,7 +15,7 @@
             <h1 class="mt-5 text-center bb1 fw-bold">
                 <?php
                 if (!isset($_GET['categoria_id']) || empty($_GET['categoria_id'])) {
-                    echo "Ultimos Articulos";
+                    echo "Nuevos Productos";
                 } else {
                     $id_categoria = $_GET['categoria_id'];
                     $sql = "SELECT nombre FROM categorias WHERE id = $id_categoria";
@@ -30,24 +30,19 @@
             </h1>
             <div id='app'>
                 <!-- Bootstrap Modal for confirmation message -->
-                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmationModalLabel">Producto Agregado al Carrito</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Nombre: {{ productAdded.nombre }}</p>
-                                <p>Precio: ${{ productAdded.precio }}</p>
+                            <div class="modal-header bg-success">
+                                <h5 class="modal-title text-light text-center" id="confirmationModalLabel">Producto Agregado Exitosamente</h5>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div v-if="products.length > 0" class="row row-cols-md-4">
+
+
+                <div v-if="products.length > 0" class="row row-cols-md-4 d-flex justify-content-between">
                     <div class="col-md-3" v-for="product in products" :key="product.id">
                         <a :href="'productos-detalle.php?id=' + product.id" class="text-decoration-none">
                             <div class="card hr1 s1 p-2 m-2 d-flex flex-column">

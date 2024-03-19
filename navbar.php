@@ -66,12 +66,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="carrito.php">
                                     <i class="fas fa-shopping-cart"></i> Carrito
-                                    <span v-if="cart.length > 0">{{ totalProducts }}</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/carrito/app">
-                                    <i class="fas fa-user"></i> {{ nombreUsuario }}
+                                    <span v-if="cart.length > 0">({{ totalProducts }})</span>
                                 </a>
                             </li>
                             <!-- Bloque de código PHP para mostrar el nombre de usuario y el enlace para cerrar sesión -->
@@ -79,12 +74,15 @@
                             $nombreUsuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'Bienvenido';
                             if (isset($_SESSION['usuario'])) {
                                 echo '<li class="nav-item">
-                                            <a class="nav-link" href="login/cerrar_sesion.php">Cerrar Sesión</a>
-                                        </li>';
+                                          <a class="nav-link" href="/carrito/app">&nbsp;' . $_SESSION['usuario'] . '&nbsp;</a>
+                                      </li>';
+                                echo '<li class="nav-item">
+                                          <a class="nav-link" href="login/cerrar_sesion.php" title="Cerrar Sesión"><i class="fas fa-user" alt="Usuario"></i>Cerrar Sesión</a>
+                                      </li>';                            
                             } else {
                                 echo '<li class="nav-item">
-                                            <a class="nav-link" href="login/login.php">Iniciar Sesión</a>
-                                        </li>';
+                                <a class="nav-link" href="login/login.php"><i class="fas fa-user"></i>Iniciar Sesión</a>
+                            </li>';
                             }
                             ?>
                         </ul>
