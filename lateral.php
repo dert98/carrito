@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Navbar vertical -->
-    <nav class="navbar h-100 w-50 navbar-expand-md navbar-dark bg-dark flex-md-column flex-row align-items-start navbar-vertical">
+    <nav class="navbar h-100 w-75 navbar-expand-md navbar-dark bg-dark flex-md-column flex-row align-items-start navbar-vertical">
         <!-- Botón de hamburguesa para dispositivos pequeños -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
             <span class="navbar-toggler-icon"></span>
@@ -25,7 +25,7 @@
 
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
-                        echo '<li class="nav-item"><a class="nav-link" href="/carrito/?categoria_id='.$row["id"].'">'.$row["nombre"].'</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link text-center" href="/carrito/?categoria_id='.$row["id"].'">'.$row["nombre"].'</a></li>';
                     }
                 } else {
                     echo "0 resultados";
