@@ -14,22 +14,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $precio = trim($_POST["precio"]);
     $categoria_id = trim($_POST["categoria_id"]);
 
-    // Check if any file is selected
-    if(isset($_FILES['imagenes']) && !empty($_FILES['imagenes']['name'][0])) {
-        $imagen_dir = "/img/p1" . $producto_id . "/"; // Carpeta donde se guardarán las imágenes
-        if (!file_exists($imagen_dir)) {
-            mkdir($imagen_dir, 0777, true); // Crear directorio si no existe
-        }
-
-        // Loop through each file in the $_FILES array
-        foreach($_FILES['imagenes']['tmp_name'] as $key => $tmp_name) {
-            $file_name = basename($_FILES['imagenes']['name'][$key]); // Nombre del archivo original
-            $imagen_path = $imagen_dir . $file_name; // Ruta donde se guardará el archivo
-            move_uploaded_file($_FILES['imagenes']['tmp_name'][$key], $imagen_path); // Mover el archivo al directorio deseado
-            // Puedes guardar la ruta de la imagen en la base de datos si es necesario
-        }
-    }
-
     // Insertar datos del producto en la base de datos
     $dsn = "mysql:host=$db_server;dbname=$db_name;charset=utf8mb4";
     $options = [
@@ -48,7 +32,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $stmt = $pdo->prepare("INSERT INTO productos (nombre, descripcion, precio, categoria_id, imagen) VALUES (?, ?, ?, ?, ?)");
 
     if($stmt->execute([$nombre, $descripcion, $precio, $categoria_id, $imagen_path])) {
-        $stmt = null;
+        // Obtener el ID del producto recién insertado
+        $producto_id = $pdo->lastInsertId();
+
+        // Carpeta donde se guardarán las imágenes
+        $imagen_dir = "../img/p" . $producto_id . "/";
+        if (!file_exists($imagen_dir)) {
+            mkdir($imagen_dir, 0777, true); // Crear directorio si no existe
+        }
+
+        // Loop through each file in the $_FILES array
+        foreach($_FILES['imagenes']['tmp_name'] as $key => $tmp_name) {
+            // Generar el nombre del archivo con un formato secuencial (1.webp, 2.webp, etc.)
+            $file_name = ($key + 1) . ".webp";
+        
+            // Ruta completa donde se guardará el archivo
+            $imagen_path = $imagen_dir . $file_name;
+        
+            // Mover el archivo cargado desde su ubicación temporal a la ruta especificada
+            move_uploaded_file($_FILES['imagenes']['tmp_name'][$key], $imagen_path);
+        }
+
+        // Redirigir después de insertar el producto
         header("location: productos-index.php");
         exit();
     } else{

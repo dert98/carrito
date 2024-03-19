@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Panel de control</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/6b773fe9e4.js" crossorigin="anonymous"></script>
     <style type="text/css">
@@ -23,43 +23,42 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="float-left">categorias Details</h2>
-                        <a href="categorias-create.php" class="btn btn-success float-right">Add New Record</a>
-                        <a href="categorias-index.php" class="btn btn-info float-right mr-2">Reset View</a>
-                        <a href="index.php" class="btn btn-secondary float-right mr-2">Back</a>
+                        <h2 class="float-left">Detalles de categorías</h2>
+                        <a href="categorias-create.php" class="btn btn-success float-right">Agregar nuevo registro</a>
+                        <a href="categorias-index.php" class="btn btn-info float-right mr-2">Restablecer vista</a>
+                        <a href="index.php" class="btn btn-secondary float-right mr-2">Volver</a>
                     </div>
 
                     <div class="form-row">
                         <form action="categorias-index.php" method="get">
                         <div class="col">
-                          <input type="text" class="form-control" placeholder="Search this table" name="search">
+                          <input type="text" class="form-control" placeholder="Buscar en esta tabla" name="search">
                         </div>
                     </div>
                         </form>
                     <br>
 
                     <?php
-                    // Include config file
+                    // Incluir archivo de configuración
                     require_once "config.php";
                     require_once "helpers.php";
 
-                    //Get current URL and parameters for correct pagination
-                    $protocol = $_SERVER['SERVER_PROTOCOL'];
-                    $domain     = $_SERVER['HTTP_HOST'];
-                    $script   = $_SERVER['SCRIPT_NAME'];
-                    $parameters   = $_SERVER['QUERY_STRING'];
-                    $protocol=strpos(strtolower($_SERVER['SERVER_PROTOCOL']),'https')
-                                === FALSE ? 'http' : 'https';
-                    $currenturl = $protocol . '://' . $domain. $script . '?' . $parameters;
+                    // Obtener la URL actual y los parámetros para la paginación correcta
+                    $protocolo = $_SERVER['SERVER_PROTOCOL'];
+                    $dominio = $_SERVER['HTTP_HOST'];
+                    $script = $_SERVER['SCRIPT_NAME'];
+                    $parametros = $_SERVER['QUERY_STRING'];
+                    $protocolo = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === FALSE ? 'http' : 'https';
+                    $url_actual = $protocolo . '://' . $dominio . $script . '?' . $parametros;
 
-                    //Pagination
+                    // Paginación
                     if (isset($_GET['pageno'])) {
                         $pageno = $_GET['pageno'];
                     } else {
                         $pageno = 1;
                     }
 
-                    //$no_of_records_per_page is set on the index page. Default is 10.
+                    //$no_of_records_per_page se establece en la página de índice. El valor predeterminado es 10.
                     $offset = ($pageno-1) * $no_of_records_per_page;
 
                     $total_pages_sql = "SELECT COUNT(*) FROM categorias";
@@ -67,14 +66,14 @@
                     $total_rows = mysqli_fetch_array($result)[0];
                     $total_pages = ceil($total_rows / $no_of_records_per_page);
 
-                    //Column sorting on column name
+                    // Ordenamiento de columnas por nombre de columna
                     $orderBy = array('id', 'nombre');
                     $order = 'id';
                     if (isset($_GET['order']) && in_array($_GET['order'], $orderBy)) {
                             $order = $_GET['order'];
                         }
 
-                    //Column sort order
+                    // Orden de clasificación de columnas
                     $sortBy = array('asc', 'desc'); $sort = 'desc';
                     if (isset($_GET['sort']) && in_array($_GET['sort'], $sortBy)) {
                           if($_GET['sort']=='asc') {
@@ -85,7 +84,7 @@
                         }
                     }
 
-                    // Attempt select query execution
+                    // Intento de ejecución de consulta de selección
                     $sql = "SELECT * FROM categorias ORDER BY $order $sort LIMIT $offset, $no_of_records_per_page";
                     $count_pages = "SELECT * FROM categorias";
 
@@ -112,7 +111,7 @@
                                $total_pages = ceil(mysqli_num_rows($result_count) / $no_of_records_per_page);
                            }
                             $number_of_results = mysqli_num_rows($result_count);
-                            echo " " . $number_of_results . " results - Page " . $pageno . " of " . $total_pages;
+                            echo " " . $number_of_results . " resultados - Página " . $pageno . " de " . $total_pages;
 
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
@@ -120,7 +119,7 @@
                                         echo "<th><a href=?search=$search&sort=&order=id&sort=$sort>id</th>";
 										echo "<th><a href=?search=$search&sort=&order=nombre&sort=$sort>nombre</th>";
 										
-                                        echo "<th>Action</th>";
+                                        echo "<th>Acción</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -128,9 +127,9 @@
                                     echo "<tr>";
                                     echo "<td>" . $row['id'] . "</td>";echo "<td>" . $row['nombre'] . "</td>";
                                         echo "<td>";
-                                            echo "<a href='categorias-read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><i class='far fa-eye'></i></a>";
-                                            echo "<a href='categorias-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><i class='far fa-edit'></i></a>";
-                                            echo "<a href='categorias-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><i class='far fa-trash-alt'></i></a>";
+                                            echo "<a href='categorias-read.php?id=". $row['id'] ."' title='Ver registro' data-toggle='tooltip'><i class='far fa-eye'></i></a>";
+                                            echo "<a href='categorias-update.php?id=". $row['id'] ."' title='Actualizar registro' data-toggle='tooltip'><i class='far fa-edit'></i></a>";
+                                            echo "<a href='categorias-delete.php?id=". $row['id'] ."' title='Eliminar registro' data-toggle='tooltip'><i class='far fa-trash-alt'></i></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -139,30 +138,30 @@
 ?>
                                 <ul class="pagination" align-right>
                                 <?php
-                                    $new_url = preg_replace('/&?pageno=[^&]*/', '', $currenturl);
+                                    $new_url = preg_replace('/&?pageno=[^&]*/', '', $url_actual);
                                  ?>
-                                    <li class="page-item"><a class="page-link" href="<?php echo $new_url .'&pageno=1' ?>">First</a></li>
+                                    <li class="page-item"><a class="page-link" href="<?php echo $new_url .'&pageno=1' ?>">Primera</a></li>
                                     <li class="page-item <?php if($pageno <= 1){ echo 'disabled'; } ?>">
-                                        <a class="page-link" href="<?php if($pageno <= 1){ echo '#'; } else { echo $new_url ."&pageno=".($pageno - 1); } ?>">Prev</a>
+                                        <a class="page-link" href="<?php if($pageno <= 1){ echo '#'; } else { echo $new_url ."&pageno=".($pageno - 1); } ?>">Anterior</a>
                                     </li>
                                     <li class="page-item <?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
-                                        <a class="page-link" href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo $new_url . "&pageno=".($pageno + 1); } ?>">Next</a>
+                                        <a class="page-link" href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo $new_url . "&pageno=".($pageno + 1); } ?>">Siguiente</a>
                                     </li>
                                     <li class="page-item <?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
-                                        <a class="page-item"><a class="page-link" href="<?php echo $new_url .'&pageno=' . $total_pages; ?>">Last</a>
+                                        <a class="page-item"><a class="page-link" href="<?php echo $new_url .'&pageno=' . $total_pages; ?>">Última</a>
                                     </li>
                                 </ul>
 <?php
-                            // Free result set
+                            // Liberar conjunto de resultados
                             mysqli_free_result($result);
                         } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
+                            echo "<p class='lead'><em>No se encontraron registros.</em></p>";
                         }
                     } else{
-                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        echo "ERROR: No se pudo ejecutar $sql. " . mysqli_error($link);
                     }
 
-                    // Close connection
+                    // Cerrar conexión
                     mysqli_close($link);
                     ?>
                 </div>
