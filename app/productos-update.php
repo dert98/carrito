@@ -1,98 +1,105 @@
 <?php
-// Include config file
 require_once "config.php";
 require_once "helpers.php";
 
-// Define variables and initialize with empty values
 $nombre = "";
 $descripcion = "";
 $precio = "";
 $categoria_id = "";
 $imagen = "";
-
 $nombre_err = "";
 $descripcion_err = "";
 $precio_err = "";
 $categoria_id_err = "";
 $imagen_err = "";
 
-
-// Processing form data when form is submitted
 if(isset($_POST["id"]) && !empty($_POST["id"])){
-    // Get hidden input value
     $id = $_POST["id"];
 
     $nombre = trim($_POST["nombre"]);
-		$descripcion = trim($_POST["descripcion"]);
-		$precio = trim($_POST["precio"]);
-		$categoria_id = trim($_POST["categoria_id"]);
-		$imagen = trim($_POST["imagen"]);
-		
+    $descripcion = trim($_POST["descripcion"]);
+    $precio = trim($_POST["precio"]);
+    $categoria_id = trim($_POST["categoria_id"]);
 
-    // Prepare an update statement
-    $dsn = "mysql:host=$db_server;dbname=$db_name;charset=utf8mb4";
-    $options = [
-        PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
-    ];
-    try {
-        $pdo = new PDO($dsn, $db_user, $db_password, $options);
-    } catch (Exception $e) {
-        error_log($e->getMessage());
-        exit('Something weird happened');
+    if(isset($_FILES["imagenes"]) && !empty($_FILES["imagenes"]["name"][0])) {
+        $uploadOk = 1;
+
+        $targetDirectory = "../img/p$product_id/";
+
+        if (!file_exists($targetDirectory)) {
+            mkdir($targetDirectory, 0777, true);
+        }
+
+        for($i = 0; $i < count($_FILES["imagenes"]["name"]); $i++) {
+            $filename = $_FILES["imagenes"]["name"][$i];
+            $targetFile = $targetDirectory . $filename;
+
+            $counter = 1;
+            while(file_exists($targetFile)) {
+                $filename = $counter . ".webp";
+                $targetFile = $targetDirectory . $filename;
+                $counter++;
+            }
+
+            if (move_uploaded_file($_FILES["imagenes"]["tmp_name"][$i], $targetFile)) {
+                $image_path = "img/p$product_id/" . $filename;
+                try {
+                    $pdo = new PDO($dsn, $db_user, $db_password, $options);
+                    $stmt_update_image = $pdo->prepare("UPDATE productos SET imagen = ? WHERE id = ?");
+                    $stmt_update_image->execute([$image_path, $product_id]);
+                } catch (PDOException $e) {
+                    echo "Error: " . $e->getMessage();
+                }
+            } else {
+                $imagen_err = "Hubo un error al subir el archivo " . basename($_FILES["imagenes"]["name"][$i]) . ".";
+                $uploadOk = 0;
+            }
+        }
     }
 
-    $vars = parse_columns('productos', $_POST);
-    $stmt = $pdo->prepare("UPDATE productos SET nombre=?,descripcion=?,precio=?,categoria_id=?,imagen=? WHERE id=?");
+    try {
+        $dsn = "mysql:host=$db_server;dbname=$db_name;charset=utf8mb4";
+        $pdo = new PDO($dsn, $db_user, $db_password, $options);
+        $vars = parse_columns('productos', $_POST);
+        $stmt = $pdo->prepare("UPDATE productos SET nombre=?,descripcion=?,precio=?,categoria_id=?,imagen=? WHERE id=?");
 
-    if(!$stmt->execute([ $nombre,$descripcion,$precio,$categoria_id,$imagen,$id  ])) {
-        echo "Something went wrong. Please try again later.";
-        header("location: error.php");
-    } else {
-        $stmt = null;
-        header("location: productos-read.php?id=$id");
+        if(!$stmt->execute([$nombre, $descripcion, $precio, $categoria_id, $imagen, $id])) {
+            echo "Something went wrong. Please try again later.";
+            header("location: error.php");
+        } else {
+            $stmt = null;
+            header("location: productos-read.php?id=$id");
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
 } else {
-    // Check existence of id parameter before processing further
-	$_GET["id"] = trim($_GET["id"]);
+    $_GET["id"] = trim($_GET["id"]);
     if(isset($_GET["id"]) && !empty($_GET["id"])){
-        // Get URL parameter
         $id =  trim($_GET["id"]);
 
-        // Prepare a select statement
         $sql = "SELECT * FROM productos WHERE id = ?";
         if($stmt = mysqli_prepare($link, $sql)){
-            // Set parameters
             $param_id = $id;
 
-            // Bind variables to the prepared statement as parameters
-			if (is_int($param_id)) $__vartype = "i";
-			elseif (is_string($param_id)) $__vartype = "s";
-			elseif (is_numeric($param_id)) $__vartype = "d";
-			else $__vartype = "b"; // blob
-			mysqli_stmt_bind_param($stmt, $__vartype, $param_id);
+            if (is_int($param_id)) $__vartype = "i";
+            elseif (is_string($param_id)) $__vartype = "s";
+            elseif (is_numeric($param_id)) $__vartype = "d";
+            mysqli_stmt_bind_param($stmt, $__vartype, $param_id);
 
-            // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 $result = mysqli_stmt_get_result($stmt);
 
                 if(mysqli_num_rows($result) == 1){
-                    /* Fetch result row as an associative array. Since the result set
-                    contains only one row, we don't need to use while loop */
                     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-                    // Retrieve individual field value
-
                     $nombre = $row["nombre"];
-					$descripcion = $row["descripcion"];
-					$precio = $row["precio"];
-					$categoria_id = $row["categoria_id"];
-					$imagen = $row["imagen"];
-					
+                    $descripcion = $row["descripcion"];
+                    $precio = $row["precio"];
+                    $categoria_id = $row["categoria_id"];
+                    $imagen = $row["imagen"];
 
                 } else{
-                    // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
                     exit();
                 }
@@ -102,11 +109,9 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
 
-        // Close statement
         mysqli_stmt_close($stmt);
 
     }  else{
-        // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
     }
@@ -146,28 +151,30 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                                 <input type="text" name="precio" class="form-control" value="<?php echo $precio; ?>">
                                 <span class="form-text"><?php echo $precio_err; ?></span>
                             </div>
-						<div class="form-group">
-                                <label>categoria_id</label>
-                                    <select class="form-control" id="categoria_id" name="categoria_id">
+                            <div class="form-group">
+                                <label>categoria</label>
+                                <select class="form-control" id="categoria_id" name="categoria_id">
                                     <?php
-                                        $sql = "SELECT *,id FROM categorias";
+                                        $sql = "SELECT id, nombre FROM categorias"; // Modificado para seleccionar solo id y nombre
                                         $result = mysqli_query($link, $sql);
                                         while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                                            array_pop($row);
-                                            $value = implode(" | ", $row);
-                                            if ($row["id"] == $categoria_id){
-                                            echo '<option value="' . "$row[id]" . '"selected="selected">' . "$value" . '</option>';
+                                            $categoria_id = $row['id']; // ID de la categoría
+                                            $nombre_categoria = $row['nombre']; // Nombre de la categoría
+                                            if ($categoria_id == $categoria_id_selected) {
+                                                echo '<option value="' . $categoria_id . '" selected>' . $nombre_categoria . '</option>';
                                             } else {
-                                                echo '<option value="' . "$row[id]" . '">' . "$value" . '</option>';
-                                        }
+                                                echo '<option value="' . $categoria_id . '">' . $nombre_categoria . '</option>';
+                                            }
                                         }
                                     ?>
-                                    </select>
+                                </select>
                                 <span class="form-text"><?php echo $categoria_id_err; ?></span>
                             </div>
-						<div class="form-group">
+
+
+                            <div class="form-group">
                                 <label>imagen</label>
-                                <input type="text" name="imagen" maxlength="255"class="form-control" value="<?php echo $imagen; ?>">
+                                <input name="imagenes[]" type="file" class="form-control" multiple>
                                 <span class="form-text"><?php echo $imagen_err; ?></span>
                             </div>
 

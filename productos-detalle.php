@@ -63,20 +63,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <?php echo generarSliderImagenes("img/p1/"); ?>
-                    </div>
-                    <!-- Controles del slider -->
-                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
+                <img src="<?php echo "img/p".$row["id"]."/1.webp" ?>" alt="" srcset="">
             </div>
             <div class="col-md-6">
                 <div class="form-group">
@@ -100,7 +87,7 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
                     <p class="form-control-static"><?php echo $row["imagen"]; ?></p>
                 </div>
 
-                <p><a href="#" class="btn btn-primary">Atras</a></p>
+                <p><a href="/carrito" class="btn btn-primary">Atras</a></p>
             </div>
         </div>
     </div>

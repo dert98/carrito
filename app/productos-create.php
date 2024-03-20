@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $stmt = $pdo->prepare("INSERT INTO productos (nombre, descripcion, precio, categoria_id, imagen) VALUES (?, ?, ?, ?, ?)");
 
-    if($stmt->execute([$nombre, $descripcion, $precio, $categoria_id, $imagen_path])) {
+    if ($stmt->execute([$nombre, $descripcion, $precio, $categoria_id, $file_name])) { // Cambio aquí
         // Obtener el ID del producto recién insertado
         $producto_id = $pdo->lastInsertId();
 
