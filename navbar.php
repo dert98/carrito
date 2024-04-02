@@ -64,6 +64,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="quienes.php">
+                                    <i class="fas fa-home"></i> Quienes Somos
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="carrito.php">
                                     <i class="fas fa-shopping-cart"></i> Carrito
                                     <span v-if="cart.length > 0">({{ totalProducts }})</span>
