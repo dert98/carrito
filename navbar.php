@@ -59,14 +59,14 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/">
+                                <a class="nav-link" href="/carrito">
                                     <i class="fas fa-home"></i> Inicio
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="carrito.php">
                                     <i class="fas fa-shopping-cart"></i> Carrito
-                                    <span v-if="cart.length > 0">({{ cantidadProductos }})</span>
+                                    <span v-if="cart.length > 0">({{ totalProducts }})</span>
                                 </a>
                             </li>
                             <!-- Bloque de código PHP para mostrar el nombre de usuario y el enlace para cerrar sesión -->
