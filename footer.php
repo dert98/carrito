@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Importa Font Awesome -->
     <style>
         .footer {
-            background-image: url('img/footer.jpg');
-            background-size: cover;
-            color: white; /* Cambia el color del texto para que sea visible en la imagen */
-            
+            background-color: rgba(0, 0, 0, 0.8); /* Color de fondo semi-transparente */
+            color: white; /* Color del texto */
+            padding: 20px; /* Ajusta el espacio interno del footer */
+            text-align: center; /* Alinea el contenido al centro */
+            backdrop-filter: blur(5px); /* Aplica un difuminado de 5px al contenido detrás del footer */
         }
         .footer h5 {
             font-size: 20px; /* Aumenta el tamaño del texto */
@@ -29,7 +30,7 @@
     </style>
 </head>
 <body>
-    <footer class="footer mt-auto py-3">
+    <footer class="footer mt-auto">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -37,20 +38,16 @@
                     <ul class="list-unstyled">
                         <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
                         <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <h5>Enlaces</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Productos</a></li>
-                        <li><a href="#">Acerca de nosotros</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h5>Contacto</h5>
                     <p>Dirección: 123 Calle Principal, Ciudad</p>
                     <p>Teléfono: +1234567890</p>
                     <p>Email: info@tudominio.com</p>

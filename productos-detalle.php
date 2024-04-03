@@ -57,19 +57,23 @@ if(isset($_GET["id"]) && !empty($_GET["id"])){
         <div class="row">
             <div class="col-md-12">
                 <div class="page-header text-center mt-3">
-                    <h1>Detalle de producto</h1>
+                    <p class="form-control-static h1"><?php echo $row["nombre"]; ?></p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <img src="<?php echo "img/p".$row["id"]."/1.webp" ?>" alt="" srcset="">
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <img class="img_pro" src="<?php echo "img/p".$row["id"]."/1.webp" ?>" alt="" srcset="">
+                <style>
+                    .img_pro {
+                        width: 500px; /* Ancho deseado */
+                        height: 400px; /* Alto deseado */
+                        object-fit: cover; /* Para asegurarte de que la imagen mantenga sus proporciones y se ajuste correctamente */
+                    }
+                </style>
             </div>
+
             <div class="col-md-6">
-                <div class="form-group">
-                    <b><label>Nombre</label></b>
-                    <p class="form-control-static"><?php echo $row["nombre"]; ?></p>
-                </div>
                 <div class="form-group">
                     <b><label>Descripcion</label></b>
                     <p class="form-control-static"><?php echo $row["descripcion"]; ?></p>
